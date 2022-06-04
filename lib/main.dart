@@ -1,26 +1,26 @@
+
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_installations/firebase_installations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:social_media_application/data/model/realtime_database_model.dart';
-import 'package:social_media_application/data/model/realtime_database_model_impl.dart';
-import 'package:social_media_application/pages/home_page.dart';
+import 'package:social_media_application/data/model/authentication_model_impl.dart';
+import 'package:social_media_application/fcm/fcm_service.dart';
+import 'package:social_media_application/pages/news_feed_page.dart';
+import 'package:social_media_application/pages/login_page.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  FCMService().listenForMessage();
 
-
-  // RealTimeDatabaseModel realTimeDatabaseModel=RealTimeDatabaseModelImpl();
-  // realTimeDatabaseModel.test().listen((event) {
-  //   final data = event.snapshot.value;
-  //   print('Data $data');
-  // });
+  var firebaseInstalledID=await FirebaseInstallations.id;
+  debugPrint('Firebase install ID ===================> $firebaseInstalledID');
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  final _auth=AuthenticationModelImpl();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,18 +28,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
           primarySwatch: Colors.blue,
           fontFamily: GoogleFonts.ubuntu().fontFamily),
-      home: const HomePage(),
+      home: (_auth.isLoggedIn())?const NewsFeedPage(): LoginPage(),
     );
   }
 }

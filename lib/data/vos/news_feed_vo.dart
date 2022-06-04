@@ -22,8 +22,10 @@ class NewsFeedVO{
   @JsonKey(name: 'profile_picture')
   String?profilePicture;
 
+  NewsFeedVO.normal();
   NewsFeedVO(this.id, this.userName, this.description, this.postImage,
       this.profilePicture);
+  NewsFeedVO.fromMap(Map<dynamic, dynamic> map): id = map['id'],userName = map['user_name'],description = map['description'],postImage = map['post_image'],profilePicture = map['profile_picture'];
 
   @override
   String toString() {
@@ -48,6 +50,12 @@ class NewsFeedVO{
       description.hashCode ^
       postImage.hashCode ^
       profilePicture.hashCode;
+
+
+  factory NewsFeedVO.fromJson(Map<String,dynamic>json)=>_$NewsFeedVOFromJson(json);
+
+
+  Map<String,dynamic>toJson()=>_$NewsFeedVOToJson(this);
 }
 
 
