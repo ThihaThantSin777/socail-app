@@ -21,8 +21,10 @@ class FirebaseRemoteConfig {
   }
 
   MaterialColor getThemeColorFromRemoteConfig(){
+    String color=_remoteConfig.getString(remoteConfigThemeColor);
+    String defaultColor='0xFF000000';
     return MaterialColor(
-      int.parse(_remoteConfig.getString(remoteConfigThemeColor)),
+      int.parse(color.isEmpty?defaultColor:color),
       const {},
     );
   }

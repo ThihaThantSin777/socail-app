@@ -36,7 +36,7 @@ dependencies:
   google_fonts: ^3.0.1
   cupertino_icons: ^1.0.2
   firebase_core: ^1.8.0
-  firebase_database: ^8.0.1
+  firebase_database: 8.0.1
   firebase_messaging: ^11.4.1
   image_picker: ^0.8.5+3
   firebase_storage: ^10.2.17
@@ -55,6 +55,7 @@ dependencies:
   firebase_in_app_messaging: ^0.6.0+15
   firebase_installations: ^16.3.6
   google_ml_kit: ^0.11.0
+  images_picker: ^1.2.11
 
 dev_dependencies:
   flutter_test:

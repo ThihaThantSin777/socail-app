@@ -7,8 +7,8 @@ import 'package:social_media_application/network/data_agent/social_data_agent.da
 import '../../network/data_agent/cloud_firestore_data_agent_impl.dart';
 
 class AuthenticationModelImpl extends AuthenticationModel{
-  //final SocialDataAgent _socialDataAgent=RealTimeDataBaseDataAgentImpl();
-  final SocialDataAgent _socialDataAgent=CloudFireStoreDataAgentImpl();
+  final SocialDataAgent _socialDataAgent=RealTimeDataBaseDataAgentImpl();
+  //final SocialDataAgent _socialDataAgent=CloudFireStoreDataAgentImpl();
   @override
   UserVO getLoggedInUser() {
     return _socialDataAgent.getLoggedInUser();

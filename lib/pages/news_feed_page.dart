@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_application/bloc/new_feeds_bloc.dart';
 import 'package:social_media_application/pages/add_new_post.dart';
 import 'package:social_media_application/pages/login_page.dart';
+import 'package:social_media_application/pages/text_detection_page.dart';
 import 'package:social_media_application/resources/dimens.dart';
 import 'package:social_media_application/utils/extension.dart';
 import 'package:social_media_application/viewitems/news_feed_item_view.dart';
@@ -52,6 +53,21 @@ class NewsFeedPage extends StatelessWidget {
           ),
           actions: [
             GestureDetector(
+              onTap: () {
+                navigatePush(context, const TextDetectionPage());
+              },
+              child: Container(
+                margin: const EdgeInsets.only(
+                  right: MARGIN_LARGE,
+                ),
+                child: const Icon(
+                  Icons.face,
+                  color: Colors.blue,
+                  size: MARGIN_LARGE,
+                ),
+              ),
+            ),
+            GestureDetector(
               onTap: () {},
               child: Container(
                 margin: const EdgeInsets.only(
@@ -81,7 +97,8 @@ class NewsFeedPage extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
+
           ],
         ),
         body: Container(

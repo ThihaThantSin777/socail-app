@@ -21,7 +21,8 @@ class AddNewPostBloc extends ChangeNotifier {
   File? chooseImageFile;
   bool isLoading = false;
   UserVO? loggInUserVO;
-  Color themeColor=Colors.black;
+  String networkImage='';
+  Color themeColor=Colors.orangeAccent;
 
   final SocialModel _socialModel=SocialModelImpl();
   final AuthenticationModel _authenticationModel=AuthenticationModelImpl();
@@ -83,6 +84,7 @@ class AddNewPostBloc extends ChangeNotifier {
 
   void onTapDeleteImage() {
     chooseImageFile = null;
+    networkImage='';
     _notifySafely();
   }
 
@@ -100,6 +102,8 @@ class AddNewPostBloc extends ChangeNotifier {
 
   void _prePopulateForEditPost(int newsFeedID) {
     _socialModel.getNewsFeedByID(newsFeedID).listen((event) {
+      networkImage=event.postImage.toString();
+      //chooseImageFile=File(event.postImage.toString());
       profilePicture = event.profilePicture ??
           'https://st3.depositphotos.com/5392356/13703/i/1600/depositphotos_137037020-stock-photo-professional-software-developer-working-in.jpg';
       userName = event.userName ?? 'Thiha Thant Sin';
@@ -118,7 +122,7 @@ class AddNewPostBloc extends ChangeNotifier {
       _prepopulateForAddPost();
     }
     _sendAnalyticsData(addNewPostScreenReached, null);
-   // _getRemoteConfigAndChangeTheme();
+    _getRemoteConfigAndChangeTheme();
   }
 void _sendAnalyticsData(String name,Map<String,String>?parameters)async{
     await FireBaseAnalyticsTracker().logEvent(name, parameters);

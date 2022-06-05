@@ -16,8 +16,8 @@ class SocialModelImpl extends SocialModel {
 
   factory SocialModelImpl() => _singleton;
 
-   //final SocialDataAgent _socialDataAgent=RealTimeDataBaseDataAgentImpl();
-  final SocialDataAgent _socialDataAgent = CloudFireStoreDataAgentImpl();
+   final SocialDataAgent _socialDataAgent=RealTimeDataBaseDataAgentImpl();
+  //final SocialDataAgent _socialDataAgent = CloudFireStoreDataAgentImpl();
   final AuthenticationModel _authenticationModel=AuthenticationModelImpl();
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() => _socialDataAgent.getNewsFeed();

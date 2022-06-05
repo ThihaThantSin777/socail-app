@@ -1,8 +1,8 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_application/bloc/add_new_post_bloc.dart';
 import 'package:social_media_application/resources/dimens.dart';
@@ -120,57 +120,79 @@ class PostImageView extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(TEXT_REGULAR_3X),
                 border: Border.all(width: 1, color: Colors.black)),
-            child: (bloc.chooseImageFile==null)? ClipRRect(
-              borderRadius: BorderRadius.circular(TEXT_REGULAR_3X),
-              child: GestureDetector(
-                onTap: ()async{
-                  print('Tap');
-                  final imagePicker=ImagePicker();
-
-
-                  final  image=await imagePicker.pickImage(
-                      source: ImageSource.gallery
-                  );
-                  print('Data $image');
-                  if(image!=null){
-                    bloc.onImageChoose(File(image.path));
-                    print('Not null');
-                  }else{
-                    print('null');
-                    return;
-                  }
-
-
-                },
-                child: Image.network(
-                  'https://www.chanchao.com.tw/images/default.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ):Container(
-              padding: const EdgeInsets.all(MARGIN_MEDIUM_1X),
-              child: Image.file(
-                bloc.chooseImageFile??File(''),
-                fit: BoxFit.cover,
-              ),
-            )
-
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Visibility(
-              visible: bloc.chooseImageFile!=null,
-              child: IconButton(
-                onPressed: (){
-                  bloc.onTapDeleteImage();
-                },
-                icon: const Icon(Icons.delete),
-                color: Colors.red,
-              ),
-            ),
+            child: (bloc.chooseImageFile == null && bloc.networkImage.isEmpty)
+                ? GestureDetector(
+              onTap: ()async{
+                List<Media>? res = await ImagesPicker.pick(
+                  count: 3,
+                  pickType: PickType.image,
+                );
+                if (res != null) {
+                  bloc.onImageChoose( File(res[0].path));
+                }
+              },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(TEXT_REGULAR_3X),
+                      child: Image.network(
+                        'https://www.chanchao.com.tw/images/default.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : (bloc.chooseImageFile == null && bloc.networkImage.isNotEmpty)
+                    ? Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(TEXT_REGULAR_3X),
+                            child: Image.network(
+                              bloc.networkImage,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: Visibility(
+                                visible: bloc.chooseImageFile != null,
+                                child: IconButton(
+                                  onPressed: () {
+                                    bloc.onTapDeleteImage();
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  color: Colors.red,
+                                ),
+                              )
+                          )
+                        ],
+                      )
+                    : Stack(
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(TEXT_REGULAR_3X),
+                            child: Image.file(
+                              bloc.chooseImageFile ?? File(''),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: Visibility(
+                              visible: bloc.chooseImageFile != null,
+                              child: IconButton(
+                                onPressed: () {
+                                  bloc.onTapDeleteImage();
+                                },
+                                icon: const Icon(Icons.delete),
+                                color: Colors.red,
+                              ),
+                            )
+                        )
+                      ],
+                    ),
           )
         ],
       ),
     );
   }
 }
+
